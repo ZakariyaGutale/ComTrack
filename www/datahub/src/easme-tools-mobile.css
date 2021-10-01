@@ -1,0 +1,319 @@
+/*
+    Copyright 2021 European Commission
+    
+    Licensed under the EUPL, Version 1.2 only (the "Licence");
+    You may not use this work except in compliance with the Licence.
+    
+    You may obtain a copy of the Licence at:
+        https://joinup.ec.europa.eu/software/page/eupl5
+    
+    Unless required by applicable law or agreed to in writing, software 
+    distributed under the Licence is distributed on an "AS IS" basis, 
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either 
+    express or implied.
+    
+    See the Licence for the specific language governing permissions 
+    and limitations under the Licence.
+*/
+html { }
+body { 
+	padding:0;
+	font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+	background-color: rgb(1,126,174);
+}
+#header h1 { 
+	color:white; 
+	margin:10px;	
+	font-weight:normal;
+	font-size:24px;
+	text-align:center;
+}
+#main { 
+position:absolute;
+top:48px;
+bottom:0px;
+left:0;
+right:0;
+overflow:hidden;
+}
+#desktop-link { 
+	position: absolute;
+	right:20px;
+	top:8px;
+	font-size:0px;
+	
+}
+#desktop-link a {
+	display:block;
+	width:32px;
+	height:32px;
+	background: url(images/button-mobile-desktop.png) center center;
+}
+#footer { 
+	position:fixed;
+	bottom:0;
+	left:0;
+	right:0;
+	height:50px;
+	background-color:rgb(1,126,174);
+}
+#mobile-menu { 
+	position:absolute;
+	bottom:0;
+	right:0px;
+}
+#mobile-menu a { 
+	font-size:0px;
+	padding-right:10px;
+}
+#button-mobile-search { 
+	display:block;
+	width:48px;
+	height:48px;
+	background: url(images/button-mobile-search.png) center center no-repeat;
+	position:absolute;
+	bottom:0;
+	right:80px;
+}
+#button-mobile-search.hilite { 
+	background-image: url(images/button-mobile-search-on.png);
+}
+#button-mobile-results { 
+	display:block;
+	width:48px;
+	height:48px;
+	background: url(images/button-mobile-results.png) center center no-repeat;
+	position:absolute;
+	bottom:0;
+	right:20px;
+}
+#button-mobile-results.hilite { 
+	background-image: url(images/button-mobile-results-on.png);
+}
+#toolbar { display:none; }
+#credits { display:none; }
+#legend { display:none; }
+#button-expand { display:none; }
+#lookup-container { 
+	display:block;
+	position:absolute;
+	position:absolute;
+	top:10px;
+	right:32px;
+	left:10px;
+}
+#lookup { 
+	width:100%;
+	height:28px;
+	border:1px solid #cecece;
+	border-right:none; 
+}
+#button-lookup { 
+	position:absolute;
+	top:10px;
+	right:10px;
+	height:32px;
+	width:28px;
+	border:1px solid #cecece;
+	border-left:none;
+	background: white url(images/search.png) center center no-repeat; 
+}
+#button-lookup.locked { 
+	background: white url(images/spinner.gif) center center no-repeat; 
+}
+#clear-container { 
+	text-align:right;
+	padding-right:10px;
+}
+#button-clear { 
+	color:white;
+	text-decoration:none;
+	font-size:20px;
+}
+#filters, #list { 
+	position: absolute;
+	top: 0;
+	bottom:50px;
+	left:0;
+	right:0;
+	overflow-y:auto;
+}
+#filters-content { 
+	background-color:white;
+	position:relative;
+	padding-top:50px;
+	background-color: rgb(1,126,174);
+	color:white;
+	margin-bottom:42px;
+}
+#filters-content .expander {
+	display:block;
+	width:18px;
+	height:18px;
+	float:right;
+	margin-right:10px;
+	background: url(images/button-down-white.png) center center no-repeat;
+}
+#filters-content .expander.opened {
+	background: url(images/button-up-white.png) center center no-repeat;
+}
+#filters-list ul { padding:0; }
+#filters-list li {
+	list-style-type: none;
+	font-size:14px;
+	border-top: 1px dashed white;
+	padding-left:0;
+	margin-top:10px;
+}
+#filters-list li h2 {
+	font-size:22px;
+	font-weight:normal;
+	text-align:center;
+}
+#filters-list li ul li {
+	list-style-type: none;
+	font-size:20px;
+	border-top: none;
+	margin:12px 20px 12px 20px;
+	display:block;
+	clear:both;
+}
+#filters-list li ul li label {
+	width:180px;
+	display:block;
+	float:left;
+	font-size:20px;
+	margin-bottom:10px;
+}
+.single { 
+width:100%;
+}
+SPAN.value-display { 
+display:block;
+float:right;
+}
+
+SELECT { 
+float:right;
+font-size:20px;
+}
+INPUT[type=range] { 
+clear:both;
+width:100%;
+}
+#list { 
+	overflow:hidden;
+	bottom:0;
+}
+#lists { 
+	position:absolute;
+	top:0;
+	left:0;
+	right:0;
+	background-color: white;
+	bottom:50px;
+	overflow-y:auto;
+}
+#lists a {	
+	color: rgb(1,126,174);	
+	text-decoration:none;
+	
+}
+.item { 
+	border-bottom:1px dotted rgb(1,126,174);
+	padding:10px;
+	font-size:20px;
+}
+.item .beneficiary-name, .item .project-acronym { 
+	display:block;
+}
+#list-selector { 
+position:absolute;
+top:0;
+right:20px;
+border:1px solid rgb(1,126,174);
+border-top:none;
+background-color:white;
+width:280px;
+height:32px;
+border-radius: 0px 0px 16px 16px;
+}
+#list-selector a { 
+	display:block;
+	width:110px;
+	padding: 6px 6px 6px 20px;
+	float:left;
+	text-align:center;
+	color: rgb(1,126,174);
+	font-size:20px;
+	text-decoration:none;
+}
+#beneficiary-sheet { 
+	position:absolute;
+	top:0px;
+	bottom:50px;
+	left:0;
+	right:0;
+	background-color:white;
+	overflow-y:auto;
+	padding: 0 20px 40px 20px;
+	font-size:18px;
+}
+#beneficiary-sheet h1 { 
+	font-size:24px;
+	color:rgb(1,126,174);
+	margin-top:30px;
+}
+
+#beneficiary-sheet .website { margin-bottom:10px; } 
+
+#beneficiary-sheet a.close-button {
+	display:block;
+	width:24px;
+	height:24px;
+	background:url(images/button-close-blue.png) center center no-repeat;
+	position:absolute;
+	top:10px;
+	right:10px;
+}
+#beneficiary-sheet .website a { 
+	text-decoration:none;	
+	color:rgb(1,126,174);
+	
+	font-weight:bold;
+} 
+#beneficiary-sheet div  {
+	clear:both;
+	padding-top:5px;
+}
+#beneficiary-sheet div label {  
+	font-weight:bold;
+	padding-right:10px;
+}
+#beneficiary-sheet div span { }
+#beneficiary-sheet p { 
+
+	font-size:18px;
+	line-height:130%;
+	text-align:justify;
+}
+
+#spread { display:none; }
+#disclaimer { display:none; }
+#embed { display:none; }
+#data-info { 
+color:white;
+position:absolute;
+left:10px;
+bottom:12px;
+font-size:12px;
+}
+.direct-link { 
+	display:none;
+}
+#button-view-beneficiaries.selected { 
+	color:#FC0;
+}
+#button-view-projects.selected { 
+	color:#FC0;
+}

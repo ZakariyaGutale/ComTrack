@@ -1,0 +1,6 @@
+CREATE DATABASE IF NOT EXISTS `dg_mare`;
+USE `dg_mare`;
+
+ALTER DATABASE `dg_mare`
+DEFAULT CHARACTER SET utf8mb4
+DEFAULT COLLATE utf8mb4_general_ci;

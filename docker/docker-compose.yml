@@ -1,0 +1,72 @@
+version: '3.1'
+
+services:
+  mariadb:
+    build:
+      dockerfile: DockerFile
+      context: ./mariadb
+    image: ooc-mariadb
+    container_name: ooc-db
+    restart: always
+    ports:
+      - 3306:3306
+    networks: 
+      - ooc
+    environment:
+      MYSQL_ROOT_PASSWORD: maria
+      MYSQL_DATABASE: dg_mare
+      MYSQL_USER: ooc
+      MYSQL_PASSWORD: ooc
+  phpadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: ooc-db-admin
+    restart: "no"
+    environment:
+      - PMA_HOST=ooc-db
+      - PMA_USER=ooc
+      - PMA_PASSWORD=ooc
+    ports:
+      - 8082:80
+    networks: 
+      - ooc
+  apache:
+    build:
+      dockerfile: DockerFile
+      context: ./apache
+    image: ooc-apache
+    container_name: ooc-server
+    restart: always
+    ports:
+      - 81:80
+    volumes:
+      - ./../www:/var/www/html
+    environment:
+      CONTAINER_ROLE: app
+    networks: 
+      - ooc
+  scheduler:
+    image: ooc-apache
+    container_name: ooc-scheduler
+    depends_on:
+      - apache
+    restart: always
+    #ports:
+    #  - 82:80
+    volumes:
+      - ./../www:/var/www/html
+    environment:
+      CONTAINER_ROLE: scheduler
+    networks: 
+      - ooc
+  mailhog:
+    image: mailhog/mailhog:v1.0.0
+    restart: always
+    ports:
+      - 1025:1025
+      - 8025:8025
+    networks:
+      - ooc
+networks: 
+  ooc:
+    driver: bridge
+

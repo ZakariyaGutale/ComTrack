@@ -1,0 +1,10 @@
+FROM mariadb:10.4.1
+
+LABEL maintainer="Hugo Martins <hfpmartins@gmail.com>"
+
+COPY create_db.sql /docker-entrypoint-initdb.d/1.sql
+COPY dg_mare.sql /docker-entrypoint-initdb.d/2.sql
+COPY data.sql /docker-entrypoint-initdb.d/3.sql
+COPY countries.sql /docker-entrypoint-initdb.d/4.sql
+
+EXPOSE 3306

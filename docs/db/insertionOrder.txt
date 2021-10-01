@@ -1,0 +1,13 @@
+applicants_types
+proposals_themes
+applicants
+proposals
+users
+external_links
+proposals_sites
+logs
+proposals_applicants
+campaigns
+ci_sessions
+configs
+countries

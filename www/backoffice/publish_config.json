@@ -1,0 +1,1 @@
+{"scheduler_active":"1","scheduler_expression":{"scheduler-day":"1","scheduler-month":"1","scheduler-hour":"12","scheduler-minute":"20","scheduler-weekday":"0","scheduler-selector":"day","scheduler-expression":"20 12 * * *"}}

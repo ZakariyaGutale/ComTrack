@@ -1,0 +1,2 @@
+* * * * * /usr/local/bin/php /var/www/html/backoffice/index.php publish publish_cron > /proc/1/fd/1 2>/proc/1/fd/2
+1 0 * * * /usr/local/bin/php /var/www/html/backoffice/index.php campaign campaign_cron > /proc/1/fd/1 2>/proc/1/fd/2

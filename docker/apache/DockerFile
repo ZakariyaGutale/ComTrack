@@ -1,0 +1,45 @@
+FROM php:7.1.0-apache
+
+LABEL maintainer="Hugo Martins <hfpmartins@gmail.com>"
+
+RUN apt-get update \
+    && apt-get install --no-install-recommends --assume-yes --quiet ca-certificates curl git cron libpng-dev libzip-dev zip\
+    && docker-php-ext-configure zip --with-libzip \
+    && docker-php-ext-install mysqli \
+    && docker-php-ext-install gd \
+    && docker-php-ext-install zip \
+    && rm -r /var/lib/apt/lists/*
+
+RUN yes | pecl install xdebug-2.6.1 \
+    && docker-php-ext-enable xdebug 
+
+COPY php-dev.ini $PHP_INI_DIR/php.ini
+COPY ooc-cron /etc/cron.d/ooc-cron
+
+RUN chmod 0644 /etc/cron.d/ooc-cron
+RUN crontab /etc/cron.d/ooc-cron
+
+RUN curl -Lsf 'https://storage.googleapis.com/golang/go1.8.3.linux-amd64.tar.gz' | tar -C '/usr/local' -xvzf -
+ENV PATH /usr/local/go/bin:$PATH
+RUN go get github.com/mailhog/mhsendmail
+RUN cp /root/go/bin/mhsendmail /usr/bin/mhsendmail
+
+RUN a2enmod rewrite \
+    && service apache2 restart
+
+COPY datahub.conf /etc/apache2/sites-available/datahub.conf
+COPY backoffice.conf /etc/apache2/sites-available/backoffice.conf
+
+RUN cd /etc/apache2/sites-available/ \
+    && a2dissite 000-default.conf \
+    && a2ensite datahub.conf \
+    && a2ensite backoffice.conf
+
+RUN  service apache2 restart
+
+COPY start.sh /usr/local/bin/start
+RUN chmod u+x /usr/local/bin/start
+    
+EXPOSE 80
+
+CMD ["/usr/local/bin/start"]

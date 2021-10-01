@@ -1,0 +1,94 @@
+<!--
+    Copyright 2021 European Commission
+    
+    Licensed under the EUPL, Version 1.2 only (the "Licence");
+    You may not use this work except in compliance with the Licence.
+    
+    You may obtain a copy of the Licence at:
+        https://joinup.ec.europa.eu/software/page/eupl5
+    
+    Unless required by applicable law or agreed to in writing, software 
+    distributed under the Licence is distributed on an "AS IS" basis, 
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either 
+    express or implied.
+    
+    See the Licence for the specific language governing permissions 
+    and limitations under the Licence.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Document sans nom</title>
+<script language="javascript" type="text/javascript" src="nuts.js"></script>
+<script language="javascript" type="text/javascript" src="world.js"></script>
+</head>
+
+<body>
+	<div id="output"></div>
+<script>
+function getIso2(iso3) { 
+	for(var iso2 in iso2List) { 
+		if(iso2List[iso2] == iso3) return iso2
+	}
+	
+	return iso3;
+}
+
+function isEU(iso2) { 
+	
+	
+	for(var i = 0; i < o.features.length; i++) { 
+		if(o.features[i].id.indexOf(iso2) == 0) return true
+	}
+	
+	return false;
+}
+
+var EU = ["AT","BE","FR","RO","IT","CH","DE","UK","ES","PT","EL","LU","NL","SE","SI","SL","CZ","BG","PL","MT","IE","CY","DK","EE","LT","HR","FI","NO","HU","LI","LT","ME","LV","SK","IS","AL","BA","RS","MK"];
+
+var o = { 
+	"type": "FeatureCollection",
+	"features": [ 
+	
+	]
+}
+
+for(var i = 0; i < nutsAreas.features.length; i++) { 
+	var nuts = nutsAreas.features[i];
+	var item = { 
+		"type": "Feature", 
+		"properties" : {},
+		"id": nuts.id, 
+		"geometry": nuts.geometry
+		
+	};
+	
+	o.features.push(item);
+}
+
+for(var i = 0; i < worldAreas.features.length; i++) { 
+	var c = worldAreas.features[i];
+	
+	var iso2 = getIso2(c.id);
+	
+	if(iso2.length == 2 && EU.indexOf(iso2) == -1) {
+		var item = { 
+			"type": "Feature", 
+			"id": iso2, 
+			"properties" : {},
+			"geometry": c.geometry
+			
+		};
+		
+		o.features.push(item);
+	} else { 
+		console.log('rejecting',iso2);
+	}
+}
+
+document.getElementById('output').innerHTML = JSON.stringify(o);
+</script>
+</body>
+</html>
+
