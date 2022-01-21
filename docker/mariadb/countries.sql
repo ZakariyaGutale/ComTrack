@@ -259,7 +259,7 @@ INSERT INTO countries (country_name,country_alpha_2,country_alpha_3,country_code
 ,('Sweden','SE','SWE',752,'ISO 3166-2:SE','Europe','Northern Europe','',150,154,NULL)
 ,('Switzerland','CH','CHE',756,'ISO 3166-2:CH','Europe','Western Europe','',150,155,NULL)
 ,('Syrian Arab Republic','SY','SYR',760,'ISO 3166-2:SY','Asia','Western Asia','',142,145,NULL)
-,('Taiwan, Province of China','TW','TWN',158,'ISO 3166-2:TW','Asia','Eastern Asia','',142,30,NULL)
+,('Taiwan','TW','TWN',158,'ISO 3166-2:TW','Asia','Eastern Asia','',142,30,NULL)
 ,('Tajikistan','TJ','TJK',762,'ISO 3166-2:TJ','Asia','Central Asia','',142,143,NULL)
 ,('Tanzania, United Republic of','TZ','TZA',834,'ISO 3166-2:TZ','Africa','Sub-Saharan Africa','Eastern Africa',2,202,14)
 ;
