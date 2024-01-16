@@ -2,44 +2,73 @@ FROM php:7.1.0-apache
 
 LABEL maintainer="Hugo Martins <hfpmartins@gmail.com>"
 
-RUN apt-get update \
-    && apt-get install --no-install-recommends --assume-yes --quiet ca-certificates curl git cron libpng-dev libzip-dev zip\
-    && docker-php-ext-configure zip --with-libzip \
-    && docker-php-ext-install mysqli \
-    && docker-php-ext-install gd \
-    && docker-php-ext-install zip \
-    && rm -r /var/lib/apt/lists/*
+# Configure to use archived Debian repositories
+RUN rm /etc/apt/sources.list \
+    && echo "deb http://archive.debian.org/debian/ jessie-backports main" | tee -a /etc/apt/sources.list \
+    && echo "deb-src http://archive.debian.org/debian/ jessie-backports main" | tee -a /etc/apt/sources.list \
+    && echo "Acquire::Check-Valid-Until false;" | tee -a /etc/apt/apt.conf.d/10-nocheckvalid \
+    && echo 'Package: *\nPin: origin "archive.debian.org"\nPin-Priority: 500' | tee -a /etc/apt/preferences.d/10-archive-pin
 
-RUN yes | pecl install xdebug-2.6.1 \
+# Update and install necessary libraries
+RUN apt-get update \
+    && apt-get install -y \
+        libzip-dev \
+        zlib1g-dev \
+        libpng-dev \
+        libjpeg62-turbo-dev \
+        libfreetype6-dev \
+        curl
+        
+# Configure and install PHP extensions
+RUN docker-php-ext-configure zip --with-libzip \
+    && docker-php-ext-install zip \
+    && docker-php-ext-configure gd \
+        --with-png-dir=/usr/include/ \
+        --with-jpeg-dir=/usr/include/ \
+        --with-freetype-dir=/usr/include/ \
+    && docker-php-ext-install gd \
+    && docker-php-ext-install mysqli \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Xdebug
+RUN pecl install xdebug-2.6.1 \
     && docker-php-ext-enable xdebug 
 
+# Copy configuration files
 COPY php-dev.ini $PHP_INI_DIR/php.ini
 COPY ooc-cron /etc/cron.d/ooc-cron
 
-RUN chmod 0644 /etc/cron.d/ooc-cron
-RUN crontab /etc/cron.d/ooc-cron
+# Set permissions and configure cron
+RUN chmod 0644 /etc/cron.d/ooc-cron \
+    && crontab /etc/cron.d/ooc-cron
 
-RUN curl -Lsf 'https://storage.googleapis.com/golang/go1.8.3.linux-amd64.tar.gz' | tar -C '/usr/local' -xvzf -
-ENV PATH /usr/local/go/bin:$PATH
-RUN go get github.com/mailhog/mhsendmail
-RUN cp /root/go/bin/mhsendmail /usr/bin/mhsendmail
+# Install Go and mhsendmail
+RUN curl -Lsf 'https://storage.googleapis.com/golang/go1.8.3.linux-amd64.tar.gz' | tar -C '/usr/local' -xvzf - \
+    && export PATH=/usr/local/go/bin:$PATH \
+    && go get github.com/mailhog/mhsendmail \
+    && cp /root/go/bin/mhsendmail /usr/bin/mhsendmail
 
+# Enable Apache modules and restart
 RUN a2enmod rewrite \
     && service apache2 restart
 
+# Copy Apache configuration files
 COPY datahub.conf /etc/apache2/sites-available/datahub.conf
 COPY backoffice.conf /etc/apache2/sites-available/backoffice.conf
 
+# Configure Apache sites
 RUN cd /etc/apache2/sites-available/ \
     && a2dissite 000-default.conf \
     && a2ensite datahub.conf \
-    && a2ensite backoffice.conf
+    && a2ensite backoffice.conf \
+    && service apache2 restart
 
-RUN  service apache2 restart
-
+# Copy start script and set permissions
 COPY start.sh /usr/local/bin/start
 RUN chmod u+x /usr/local/bin/start
-    
+
+# Expose ports
 EXPOSE 80
 
+# Set the default command
 CMD ["/usr/local/bin/start"]
